@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cantio">
+<meta name="theme-color" content="#58cc02">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Cantio — Aprende a Cantar</title>
+<style>
+  :root {
+    --green: #58cc02; --green-dark: #46a302; --green-light: #d7ffb8;
+    --blue: #1cb0f6; --blue-dark: #0099d6;
+    --orange: #ff9600; --red: #ff4b4b; --purple: #ce82ff; --yellow: #ffc800;
+    --gray: #afafaf; --bg: #f7f7f7; --white: #ffffff; --text: #3c3c3c; --border: #e5e5e5;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overscroll-behavior: none; }
+  body { font-family: -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+
+  .app {
+    display: flex; flex-direction: column;
+    height: 100dvh;
+    max-width: 480px; margin: 0 auto;
+    background: var(--white);
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+    position: relative;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: calc(14px + var(--safe-top)) 16px 14px;
+    border-bottom: 2px solid var(--border);
+    flex-shrink: 0;
+    background: var(--white);
+  }
+  .topbar-logo { font-size: 22px; font-weight: 900; color: var(--green); display: flex; align-items: center; gap: 6px; }
+  .topbar-stats { display: flex; gap: 16px; }
+  .stat { display: flex; align-items: center; gap: 4px; font-weight: 700; font-size: 15px; }
+
+  /* SCREENS */
+  .screen { display: none; flex: 1; overflow-y: auto; padding: 20px 16px; -webkit-overflow-scrolling: touch; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    border-top: 2px solid var(--border);
+    background: var(--white);
+    padding-bottom: var(--safe-bottom);
+    flex-shrink: 0;
+  }
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 10px 0; cursor: pointer; color: var(--gray);
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    border: none; background: none; transition: color 0.2s;
+    -webkit-appearance: none; touch-action: manipulation;
+  }
+  .nav-item.active { color: var(--green); }
+  .nav-item svg { width: 24px; height: 24px; }
+
+  /* HOME */
+  .streak-banner {
+    background: linear-gradient(135deg, #ff6b00, #ffc800);
+    border-radius: 16px; padding: 16px; color: white;
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  }
+  .streak-icon { font-size: 40px; }
+  .streak-text h3 { font-size: 18px; font-weight: 900; }
+  .streak-text p { font-size: 13px; opacity: 0.9; }
+  .section-title { font-size: 13px; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+  /* SKILL TREE */
+  .skill-tree { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 0; }
+  .skill-row { display: flex; justify-content: center; gap: 12px; }
+  .skill-node {
+    width: 80px; height: 80px; border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; border: none; position: relative;
+    touch-action: manipulation; -webkit-appearance: none;
+    transition: transform 0.1s;
+  }
+  .skill-node:active { transform: scale(0.93); }
+  .skill-node.unlocked { background: var(--green); box-shadow: 0 4px 0 var(--green-dark); color: white; }
+  .skill-node.current { background: var(--blue); box-shadow: 0 4px 0 var(--blue-dark); color: white; animation: pulse 2s infinite; }
+  .skill-node.locked { background: #e5e5e5; box-shadow: 0 4px 0 #c0c0c0; color: var(--gray); }
+  .skill-node.bonus { background: var(--purple); box-shadow: 0 4px 0 #a855f7; color: white; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+  .skill-emoji { font-size: 28px; }
+  .skill-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; text-align: center; line-height: 1.1; }
+  .skill-crowns { display: flex; gap: 1px; position: absolute; bottom: -8px; }
+  .crown { width: 12px; height: 12px; fill: var(--yellow); }
+  .crown.empty { fill: #e5e5e5; }
+  .connector { width: 4px; height: 20px; background: var(--border); margin: 0 auto; }
+  .connector.done { background: var(--green); }
+
+  /* LEAGUE */
+  .league-banner { background: linear-gradient(135deg, #1cb0f6, #6366f1); border-radius: 16px; padding: 16px; color: white; margin-top: 20px; cursor: pointer; }
+  .league-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .league-icon { font-size: 32px; }
+  .league-info h3 { font-weight: 900; font-size: 16px; }
+  .league-info p { font-size: 12px; opacity: 0.85; }
+  .league-list { display: flex; flex-direction: column; gap: 4px; }
+  .league-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+  .league-item.you { background: rgba(255,255,255,0.3); font-weight: 800; }
+  .league-rank { width: 20px; font-weight: 800; }
+  .league-xp { margin-left: auto; font-weight: 700; font-size: 12px; opacity: 0.9; }
+
+  /* LESSON */
+  .lesson-header { margin-bottom: 20px; flex-shrink: 0; }
+  .progress-bar-wrap { height: 16px; background: var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .progress-bar-fill { height: 100%; background: var(--green); border-radius: 8px; transition: width 0.4s ease; }
+  .lesson-hearts { display: flex; gap: 4px; }
+  .heart { font-size: 18px; transition: opacity 0.3s; }
+  .heart.lost { opacity: 0.2; }
+
+  .question-card { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+  .question-type { font-size: 12px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .question-text { font-size: 20px; font-weight: 800; line-height: 1.3; }
+  .question-sub { font-size: 14px; color: var(--gray); margin-top: 6px; }
+
+  .note-display { display: flex; justify-content: center; margin: 20px 0; }
+  .big-note {
+    width: 100px; height: 100px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), #6366f1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; font-weight: 900; color: white;
+    box-shadow: 0 8px 0 rgba(28,176,246,0.4);
+    cursor: pointer; touch-action: manipulation; user-select: none;
+    transition: transform 0.1s;
+  }
+  .big-note:active { transform: scale(0.93); }
+  .play-hint { font-size: 12px; color: var(--gray); text-align: center; margin-top: 8px; }
+
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .option-btn {
+    padding: 16px 12px; border: 2px solid var(--border); border-radius: 12px;
+    background: var(--white); font-size: 15px; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    touch-action: manipulation; -webkit-appearance: none;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .option-btn:active { background: #f0f0f0; }
+  .option-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+  .option-btn.wrong { border-color: var(--red); background: #ffe5e5; color: var(--red); }
+
+  .mic-area { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 20px 0; }
+  .mic-btn {
+    width: 90px; height: 90px; border-radius: 50%; border: none;
+    background: var(--red); box-shadow: 0 6px 0 #cc0000;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px; cursor: pointer; touch-action: manipulation; -webkit-appearance: none;
+    transition: transform 0.1s;
+  }
+  .mic-btn:active, .mic-btn.recording { transform: scale(0.95); animation: micpulse 0.8s infinite; }
+  @keyframes micpulse { 0%,100%{box-shadow:0 6px 0 #880000} 50%{box-shadow:0 6px 20px rgba(255,75,75,0.5)} }
+  .mic-label { font-size: 13px; color: var(--gray); font-weight: 600; }
+  .waveform { display: flex; align-items: center; gap: 3px; height: 40px; }
+  .wave-bar { width: 5px; background: var(--green); border-radius: 3px; animation: wave 0.6s ease-in-out infinite; }
+  .wave-bar:nth-child(2){animation-delay:0.1s}.wave-bar:nth-child(3){animation-delay:0.2s}.wave-bar:nth-child(4){animation-delay:0.3s}.wave-bar:nth-child(5){animation-delay:0.4s}
+  @keyframes wave { 0%,100%{height:8px} 50%{height:32px} }
+
+  .feedback { border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .feedback.correct { background: var(--green-light); border: 2px solid var(--green); }
+  .feedback.wrong { background: #ffe5e5; border: 2px solid var(--red); }
+  .feedback-icon { font-size: 24px; }
+  .feedback-text h4 { font-weight: 800; font-size: 15px; }
+  .feedback-text p { font-size: 13px; opacity: 0.8; }
+  .feedback.correct h4 { color: var(--green-dark); }
+  .feedback.wrong h4 { color: var(--red); }
+
+  .btn {
+    width: 100%; padding: 16px; border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 800; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    touch-action: manipulation; -webkit-appearance: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .btn:active { transform: translateY(2px); }
+  .btn-green { background: var(--green); box-shadow: 0 4px 0 var(--green-dark); color: white; }
+  .btn-green:active { box-shadow: 0 2px 0 var(--green-dark); }
+  .btn-gray { background: var(--border); box-shadow: 0 4px 0 #c0c0c0; color: var(--gray); }
+  .btn-outline { background: white; border: 2px solid var(--border); color: var(--text); }
+
+  /* COMPLETION */
+  .completion { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; padding: 30px; gap: 16px; }
+  .completion-trophy { font-size: 80px; animation: bounce 0.6s ease; }
+  @keyframes bounce { 0%{transform:scale(0)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
+  .completion h2 { font-size: 28px; font-weight: 900; color: var(--green); }
+  .completion p { color: var(--gray); font-size: 15px; }
+  .xp-badge { background: linear-gradient(135deg, var(--yellow), var(--orange)); color: white; font-size: 20px; font-weight: 900; padding: 10px 24px; border-radius: 20px; }
+  .stats-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .mini-stat { background: var(--bg); border-radius: 12px; padding: 12px 16px; text-align: center; }
+  .mini-stat-val { font-size: 22px; font-weight: 900; }
+  .mini-stat-label { font-size: 11px; color: var(--gray); font-weight: 700; text-transform: uppercase; }
+
+  /* PROFILE */
+  .profile-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 16px; padding: 20px; color: white; }
+  .avatar { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .profile-name h2 { font-size: 20px; font-weight: 900; }
+  .profile-name p { font-size: 13px; opacity: 0.85; }
+  .badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .badge { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 10px; font-weight: 700; text-align: center; padding: 4px; }
+  .badge.earned { background: var(--green-light); color: var(--green-dark); }
+  .badge.locked { background: var(--border); color: var(--gray); }
+  .badge-icon { font-size: 22px; }
+  .stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { background: var(--bg); border-radius: 12px; padding: 14px; }
+  .stat-card-val { font-size: 24px; font-weight: 900; }
+  .stat-card-label { font-size: 12px; color: var(--gray); font-weight: 600; }
+  .stat-card-val.fire{color:var(--orange)}.stat-card-val.blue{color:var(--blue)}.stat-card-val.green{color:var(--green)}.stat-card-val.purple{color:var(--purple)}
+
+  /* iOS install banner */
+  .install-banner {
+    display: none;
+    background: linear-gradient(135deg, #58cc02, #46a302);
+    color: white; padding: 12px 16px;
+    font-size: 13px; font-weight: 600;
+    align-items: center; gap: 8px;
+    flex-shrink: 0;
+  }
+  .install-banner.show { display: flex; }
+  .install-banner button { background: white; color: var(--green-dark); border: none; border-radius: 8px; padding: 4px 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-left: auto; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- iOS INSTALL HINT -->
+  <div class="install-banner" id="install-banner">
+    <span>📲</span>
+    <span>Instala Cantio: toca <strong>Compartir</strong> → <strong>Añadir a pantalla de inicio</strong></span>
+    <button onclick="document.getElementById('install-banner').classList.remove('show')">✕</button>
+  </div>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-logo"><span>🎤</span> Cantio</div>
+    <div class="topbar-stats">
+      <div class="stat">🔥 <span id="streak-count">12</span></div>
+      <div class="stat">💎 <span id="gem-count">340</span></div>
+      <div class="stat">❤️ <span id="heart-count">5</span></div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div class="screen active" id="screen-home">
+    <div class="streak-banner">
+      <div class="streak-icon">🔥</div>
+      <div class="streak-text">
+        <h3>¡12 días de racha!</h3>
+        <p>Practica hoy para mantenerla</p>
+      </div>
+    </div>
+    <div class="section-title">Tu árbol de habilidades</div>
+    <div class="skill-tree">
+      <div class="skill-row">
+        <button class="skill-node unlocked" onclick="startLesson('respiracion')">
+          <div class="skill-emoji">🫁</div>
+          <div class="skill-label">Respira-ción</div>
+          <div class="skill-crowns">
+            <svg class="crown" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+          </div>
+        </button>
+      </div>
+      <div class="connector done"></div>
+      <div class="skill-row">
+        <button class="skill-node current" onclick="startLesson('afinacion')">
+          <div class="skill-emoji">🎵</div>
+          <div class="skill-label">Afina-ción</div>
+          <div class="skill-crowns">
+            <svg class="crown" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+          </div>
+        </button>
+      </div>
+      <div class="connector"></div>
+      <div class="skill-row" style="gap:30px">
+        <button class="skill-node locked"><div class="skill-emoji">🗣️</div><div class="skill-label">Vocali-zación</div></button>
+        <button class="skill-node bonus" onclick="startLesson('teoria')"><div class="skill-emoji">🎼</div><div class="skill-label">Teoría</div></button>
+      </div>
+      <div class="connector"></div>
+      <div class="skill-row">
+        <button class="skill-node locked"><div class="skill-emoji">🎤</div><div class="skill-label">Primera Canción</div></button>
+      </div>
+      <div class="connector"></div>
+      <div class="skill-row" style="gap:30px">
+        <button class="skill-node locked"><div class="skill-emoji">🎭</div><div class="skill-label">Expresión</div></button>
+        <button class="skill-node locked"><div class="skill-emoji">🎶</div><div class="skill-label">Técnica</div></button>
+      </div>
+    </div>
+    <div class="league-banner" onclick="showScreen('profile')">
+      <div class="league-header">
+        <div class="league-icon">🥇</div>
+        <div class="league-info"><h3>Liga Oro — Semana 3</h3><p>¡Estás en el top 5! Quedan 2 días</p></div>
+      </div>
+      <div class="league-list">
+        <div class="league-item"><span class="league-rank">1</span><span>🦊 MelodíaMaestro</span><span class="league-xp">1,240 XP</span></div>
+        <div class="league-item"><span class="league-rank">2</span><span>🎵 LaraVox</span><span class="league-xp">980 XP</span></div>
+        <div class="league-item you"><span class="league-rank">3</span><span>🎤 Tú</span><span class="league-xp">870 XP</span></div>
+        <div class="league-item"><span class="league-rank">4</span><span>🌟 VocalStar</span><span class="league-xp">740 XP</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSON -->
+  <div class="screen" id="screen-lesson">
+    <div id="lesson-content"></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="screen" id="screen-profile">
+    <div class="profile-header">
+      <div class="avatar">🎤</div>
+      <div class="profile-name"><h2>Fabri</h2><p>Cantante en entrenamiento</p></div>
+    </div>
+    <div class="section-title">Estadísticas</div>
+    <div class="stat-cards" style="margin-bottom:20px">
+      <div class="stat-card"><div class="stat-card-val fire">12</div><div class="stat-card-label">🔥 Racha días</div></div>
+      <div class="stat-card"><div class="stat-card-val blue">870</div><div class="stat-card-label">⚡ XP total</div></div>
+      <div class="stat-card"><div class="stat-card-val green">47</div><div class="stat-card-label">🎤 Lecciones</div></div>
+      <div class="stat-card"><div class="stat-card-val purple">82%</div><div class="stat-card-label">🎵 Afinación</div></div>
+    </div>
+    <div class="section-title">Logros</div>
+    <div class="badges-grid">
+      <div class="badge earned"><div class="badge-icon">🔥</div>Racha 7</div>
+      <div class="badge earned"><div class="badge-icon">🎵</div>Afinado</div>
+      <div class="badge earned"><div class="badge-icon">🌅</div>Madrugador</div>
+      <div class="badge locked"><div class="badge-icon">🏆</div>Liga Plata</div>
+      <div class="badge locked"><div class="badge-icon">🎭</div>Expresivo</div>
+      <div class="badge locked"><div class="badge-icon">🌊</div>Belting</div>
+      <div class="badge locked"><div class="badge-icon">⭐</div>30 días</div>
+      <div class="badge locked"><div class="badge-icon">🎤</div>Karaoke</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <button class="nav-item active" id="nav-home" onclick="showScreen('home')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Inicio
+    </button>
+    <button class="nav-item" id="nav-lesson" onclick="startLesson('afinacion')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+      Practicar
+    </button>
+    <button class="nav-item" id="nav-profile" onclick="showScreen('profile')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      Perfil
+    </button>
+  </div>
+</div>
+
+<script>
+// iOS audio unlock — required by Safari
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+document.addEventListener('touchstart', () => getAudioCtx(), { once: true });
+
+// PWA install banner — show only in iOS Safari, not in standalone mode
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.navigator.standalone;
+if (isIOS && !isStandalone) {
+  document.getElementById('install-banner').classList.add('show');
+}
+
+// Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+let currentQuestion = 0, hearts = 5, currentLesson = 'afinacion', showingFeedback = false;
+
+const lessons = {
+  afinacion: {
+    title: 'Afinación Básica',
+    questions: [
+      { type: 'quiz', text: '¿Cuál nota es más aguda?', sub: 'Elige la opción correcta', options: ['🎵 DO', '🎵 SOL', '🎵 FA', '🎵 MI'], correct: 1 },
+      { type: 'sing', text: 'Canta esta nota', sub: 'Presiona el micrófono y entona', note: 'LA', hint: '440 Hz — nota de referencia' },
+      { type: 'quiz', text: '¿En qué orden va la escala mayor?', sub: 'Elige la secuencia correcta', options: ['DO RE MI FA', 'RE MI FA SO', 'LA SI DO RE', 'MI FA SOL LA'], correct: 0 },
+      { type: 'sing', text: 'Sigue la escala', sub: 'Canta: DO - RE - MI - FA', note: '↗️', hint: 'Sube poco a poco' },
+      { type: 'quiz', text: '¿Cuántas notas tiene la escala mayor?', sub: 'Piensa en DO RE MI FA SOL LA SI', options: ['5 notas', '6 notas', '7 notas', '8 notas'], correct: 2 },
+    ]
+  },
+  respiracion: {
+    title: 'Respiración Diafragmática',
+    questions: [
+      { type: 'quiz', text: '¿Qué músculo usamos al respirar correctamente?', sub: '', options: ['Los pulmones', 'El diafragma', 'Las costillas', 'El cuello'], correct: 1 },
+      { type: 'sing', text: 'Ejercicio de respiración', sub: 'Inhala 4 tiempos, sostén 4, exhala 8', note: '🌬️', hint: 'Toca el micrófono cuando estés listo' },
+      { type: 'quiz', text: '¿Cómo debe moverse tu vientre al inhalar?', sub: '', options: ['Hacia adentro', 'No se mueve', 'Hacia afuera', 'Hacia arriba'], correct: 2 },
+    ]
+  },
+  teoria: {
+    title: 'Teoría Musical ⭐',
+    questions: [
+      { type: 'quiz', text: '¿Cuántas notas tiene el sistema occidental?', sub: 'Contando sostenidos y bemoles', options: ['7 notas', '10 notas', '12 notas', '14 notas'], correct: 2 },
+      { type: 'quiz', text: '¿Qué es un semitono?', sub: 'La distancia más pequeña entre notas', options: ['Dos notas seguidas', 'La mínima distancia', 'Media octava', 'Un acorde'], correct: 1 },
+    ]
+  }
+};
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  if (document.getElementById('nav-' + name)) document.getElementById('nav-' + name).classList.add('active');
+}
+
+function startLesson(key) {
+  currentLesson = key; currentQuestion = 0; hearts = 5; showingFeedback = false;
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('nav-lesson').classList.add('active');
+  showScreen('lesson');
+  renderQuestion();
+}
+
+function renderHearts() {
+  return Array.from({length:5}, (_,i) => `<span class="heart${i>=hearts?' lost':''}"">❤️</span>`).join('');
+}
+
+function renderQuestion() {
+  const lesson = lessons[currentLesson];
+  const q = lesson.questions[currentQuestion];
+  if (!q) { renderCompletion(); return; }
+  const progress = (currentQuestion / lesson.questions.length) * 100;
+
+  let body = '';
+  if (q.type === 'quiz') {
+    body = `
+      <div class="question-card">
+        <div class="question-type">🎵 Pregunta</div>
+        <div class="question-text">${q.text}</div>
+        ${q.sub ? `<div class="question-sub">${q.sub}</div>` : ''}
+      </div>
+      <div class="options-grid">
+        ${q.options.map((o,i) => `<button class="option-btn" id="opt-${i}" onclick="checkAnswer(${i})">${o}</button>`).join('')}
+      </div>`;
+  } else {
+    body = `
+      <div class="question-card">
+        <div class="question-type">🎤 Canta esto</div>
+        <div class="question-text">${q.text}</div>
+        <div class="question-sub">${q.sub}</div>
+      </div>
+      <div class="note-display"><div>
+        <div class="big-note" onclick="playNote()">${q.note}</div>
+        <div class="play-hint">Toca para escuchar</div>
+      </div></div>
+      <div class="mic-area">
+        <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎙️</button>
+        <div class="mic-label" id="mic-label">Presiona para cantar</div>
+        <div class="waveform" id="waveform" style="display:none">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>
+      </div>`;
+  }
+
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="lesson-header">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${progress}%"></div></div>
+      <div class="lesson-hearts">${renderHearts()}</div>
+    </div>
+    ${body}
+    <div id="feedback-area"></div>
+    <button class="btn btn-gray" id="continue-btn" style="display:none" onclick="nextQuestion()">Continuar</button>
+    <button class="btn btn-outline" onclick="showScreen('home')" style="margin-top:10px">Salir</button>
+  `;
+}
+
+function checkAnswer(idx) {
+  if (showingFeedback) return;
+  showingFeedback = true;
+  const q = lessons[currentLesson].questions[currentQuestion];
+  const ok = idx === q.correct;
+  document.querySelectorAll('.option-btn').forEach((b,i) => {
+    b.onclick = null;
+    if (i === q.correct) b.classList.add('correct');
+    else if (i === idx && !ok) b.classList.add('wrong');
+  });
+  if (!ok) { hearts = Math.max(0, hearts-1); document.querySelector('.lesson-hearts').innerHTML = renderHearts(); }
+  document.getElementById('feedback-area').innerHTML = `
+    <div class="feedback ${ok?'correct':'wrong'}">
+      <div class="feedback-icon">${ok?'✅':'❌'}</div>
+      <div class="feedback-text">
+        <h4>${ok?'¡Correcto!':'¡Casi!'}</h4>
+        <p>${ok?'¡Excelente oído!':'La respuesta correcta es: '+q.options[q.correct]}</p>
+      </div>
+    </div>`;
+  const btn = document.getElementById('continue-btn');
+  btn.style.display = 'block';
+  btn.className = `btn ${ok?'btn-green':'btn-gray'}`;
+}
+
+function toggleMic() {
+  if (showingFeedback) return;
+  getAudioCtx(); // unlock iOS audio on mic tap
+  const btn = document.getElementById('mic-btn');
+  const label = document.getElementById('mic-label');
+  const wave = document.getElementById('waveform');
+  btn.classList.add('recording');
+  label.textContent = 'Grabando...';
+  wave.style.display = 'flex';
+  setTimeout(() => {
+    btn.classList.remove('recording');
+    label.textContent = '¡Buena entonación!';
+    wave.style.display = 'none';
+    showingFeedback = true;
+    document.getElementById('feedback-area').innerHTML = `
+      <div class="feedback correct">
+        <div class="feedback-icon">✅</div>
+        <div class="feedback-text"><h4>¡Excelente afinación!</h4><p>Tu voz suena muy bien en esa nota 🎵</p></div>
+      </div>`;
+    const btn2 = document.getElementById('continue-btn');
+    btn2.style.display = 'block'; btn2.className = 'btn btn-green';
+  }, 2500);
+}
+
+function playNote() {
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.frequency.value = 440; osc.type = 'sine';
+  gain.gain.setValueAtTime(0.3, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+  osc.start(); osc.stop(ctx.currentTime + 1.5);
+}
+
+function nextQuestion() {
+  showingFeedback = false;
+  currentQuestion++;
+  if (currentQuestion >= lessons[currentLesson].questions.length) renderCompletion();
+  else renderQuestion();
+}
+
+function renderCompletion() {
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="completion">
+      <div class="completion-trophy">🏆</div>
+      <h2>¡Lección completada!</h2>
+      <p>Sigue así y serás un gran cantante</p>
+      <div class="xp-badge">+15 XP</div>
+      <div class="stats-row">
+        <div class="mini-stat"><div class="mini-stat-val">${lessons[currentLesson].questions.length}</div><div class="mini-stat-label">Ejercicios</div></div>
+        <div class="mini-stat"><div class="mini-stat-val">❤️ ${hearts}/5</div><div class="mini-stat-label">Vidas</div></div>
+        <div class="mini-stat"><div class="mini-stat-val">86%</div><div class="mini-stat-label">Precisión</div></div>
+      </div>
+      <button class="btn btn-green" onclick="showScreen('home')">Volver al inicio</button>
+    </div>`;
+  document.getElementById('gem-count').textContent = parseInt(document.getElementById('gem-count').textContent) + 15;
+}
+</script>
+</body>
+</html>

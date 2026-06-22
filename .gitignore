@@ -1,0 +1,4 @@
+.claude/
+outputs/
+.audit-key
+audit.jsonl

@@ -1,0 +1,16 @@
+{
+  "name": "Cantio — Aprende a Cantar",
+  "short_name": "Cantio",
+  "description": "Aprende a cantar con lecciones diarias gamificadas",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#58cc02",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["education", "music"],
+  "lang": "es"
+}
