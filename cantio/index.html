@@ -1,233 +1,232 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Cantio">
-<meta name="theme-color" content="#58cc02">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Cantio — Aprende a Cantar</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Cantio">
+  <meta name="theme-color" content="#58cc02">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>Cantio — Aprende a Cantar</title>
 <style>
-  :root {
-    --green: #58cc02; --green-dark: #46a302; --green-light: #d7ffb8;
-    --blue: #1cb0f6; --blue-dark: #0099d6;
-    --orange: #ff9600; --red: #ff4b4b; --purple: #ce82ff; --yellow: #ffc800;
-    --gray: #afafaf; --bg: #f7f7f7; --white: #ffffff; --text: #3c3c3c; --border: #e5e5e5;
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-    --safe-top: env(safe-area-inset-top, 0px);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overscroll-behavior: none; }
-  body { font-family: -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+:root {
+  --green:#58cc02; --green-dark:#46a302; --green-light:#d7ffb8;
+  --blue:#1cb0f6;  --blue-dark:#0099d6;
+  --orange:#ff9600; --red:#ff4b4b; --purple:#ce82ff; --yellow:#ffc800;
+  --gray:#afafaf; --bg:#f7f7f7; --white:#ffffff; --text:#3c3c3c; --border:#e5e5e5;
+  --safe-bottom:env(safe-area-inset-bottom,0px); --safe-top:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overscroll-behavior:none;}
+body{font-family:-apple-system,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);}
 
-  .app {
-    display: flex; flex-direction: column;
-    height: 100dvh;
-    max-width: 480px; margin: 0 auto;
-    background: var(--white);
-    box-shadow: 0 0 30px rgba(0,0,0,0.1);
-    position: relative;
-  }
+.app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;
+  background:var(--white);box-shadow:0 0 30px rgba(0,0,0,0.1);position:relative;}
 
-  /* TOP BAR */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: calc(14px + var(--safe-top)) 16px 14px;
-    border-bottom: 2px solid var(--border);
-    flex-shrink: 0;
-    background: var(--white);
-  }
-  .topbar-logo { font-size: 22px; font-weight: 900; color: var(--green); display: flex; align-items: center; gap: 6px; }
-  .topbar-stats { display: flex; gap: 16px; }
-  .stat { display: flex; align-items: center; gap: 4px; font-weight: 700; font-size: 15px; }
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  padding:calc(14px + var(--safe-top)) 16px 14px;border-bottom:2px solid var(--border);
+  flex-shrink:0;background:var(--white);}
+.topbar-logo{font-size:22px;font-weight:900;color:var(--green);display:flex;align-items:center;gap:6px;}
+.topbar-stats{display:flex;gap:16px;}
+.stat{display:flex;align-items:center;gap:4px;font-weight:700;font-size:15px;}
 
-  /* SCREENS */
-  .screen { display: none; flex: 1; overflow-y: auto; padding: 20px 16px; -webkit-overflow-scrolling: touch; }
-  .screen.active { display: flex; flex-direction: column; }
+/* SCREENS */
+.screen{display:none;flex:1;overflow-y:auto;padding:20px 16px;-webkit-overflow-scrolling:touch;}
+.screen.active{display:flex;flex-direction:column;}
 
-  /* NAV */
-  .nav {
-    display: flex;
-    border-top: 2px solid var(--border);
-    background: var(--white);
-    padding-bottom: var(--safe-bottom);
-    flex-shrink: 0;
-  }
-  .nav-item {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 10px 0; cursor: pointer; color: var(--gray);
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-    border: none; background: none; transition: color 0.2s;
-    -webkit-appearance: none; touch-action: manipulation;
-  }
-  .nav-item.active { color: var(--green); }
-  .nav-item svg { width: 24px; height: 24px; }
+/* NAV */
+.nav{display:flex;border-top:2px solid var(--border);background:var(--white);
+  padding-bottom:var(--safe-bottom);flex-shrink:0;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 0;cursor:pointer;color:var(--gray);font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;border:none;background:none;transition:color .2s;
+  -webkit-appearance:none;touch-action:manipulation;}
+.nav-item.active{color:var(--green);}
+.nav-item svg{width:24px;height:24px;}
 
-  /* HOME */
-  .streak-banner {
-    background: linear-gradient(135deg, #ff6b00, #ffc800);
-    border-radius: 16px; padding: 16px; color: white;
-    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
-  }
-  .streak-icon { font-size: 40px; }
-  .streak-text h3 { font-size: 18px; font-weight: 900; }
-  .streak-text p { font-size: 13px; opacity: 0.9; }
-  .section-title { font-size: 13px; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+/* HOME */
+.streak-banner{background:linear-gradient(135deg,#ff6b00,#ffc800);border-radius:16px;
+  padding:16px;color:white;display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.streak-icon{font-size:40px;}
+.streak-text h3{font-size:18px;font-weight:900;}
+.streak-text p{font-size:13px;opacity:.9;}
+.section-title{font-size:13px;font-weight:800;color:var(--gray);text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:12px;}
 
-  /* SKILL TREE */
-  .skill-tree { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 0; }
-  .skill-row { display: flex; justify-content: center; gap: 12px; }
-  .skill-node {
-    width: 80px; height: 80px; border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    cursor: pointer; border: none; position: relative;
-    touch-action: manipulation; -webkit-appearance: none;
-    transition: transform 0.1s;
-  }
-  .skill-node:active { transform: scale(0.93); }
-  .skill-node.unlocked { background: var(--green); box-shadow: 0 4px 0 var(--green-dark); color: white; }
-  .skill-node.current { background: var(--blue); box-shadow: 0 4px 0 var(--blue-dark); color: white; animation: pulse 2s infinite; }
-  .skill-node.locked { background: #e5e5e5; box-shadow: 0 4px 0 #c0c0c0; color: var(--gray); }
-  .skill-node.bonus { background: var(--purple); box-shadow: 0 4px 0 #a855f7; color: white; }
-  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
-  .skill-emoji { font-size: 28px; }
-  .skill-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; text-align: center; line-height: 1.1; }
-  .skill-crowns { display: flex; gap: 1px; position: absolute; bottom: -8px; }
-  .crown { width: 12px; height: 12px; fill: var(--yellow); }
-  .crown.empty { fill: #e5e5e5; }
-  .connector { width: 4px; height: 20px; background: var(--border); margin: 0 auto; }
-  .connector.done { background: var(--green); }
+/* SKILL TREE */
+.skill-tree{display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 0;}
+.skill-row{display:flex;justify-content:center;gap:12px;}
+.skill-node{width:80px;height:80px;border-radius:50%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;cursor:pointer;border:none;position:relative;
+  touch-action:manipulation;-webkit-appearance:none;transition:transform .1s;}
+.skill-node:active{transform:scale(.93);}
+.skill-node.unlocked{background:var(--green);box-shadow:0 4px 0 var(--green-dark);color:white;}
+.skill-node.current{background:var(--blue);box-shadow:0 4px 0 var(--blue-dark);color:white;animation:pulse 2s infinite;}
+.skill-node.locked{background:#e5e5e5;box-shadow:0 4px 0 #c0c0c0;color:var(--gray);cursor:default;}
+.skill-node.bonus{background:var(--purple);box-shadow:0 4px 0 #a855f7;color:white;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.skill-emoji{font-size:28px;}
+.skill-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;
+  margin-top:2px;text-align:center;line-height:1.1;}
+.skill-crowns{display:flex;gap:1px;position:absolute;bottom:-8px;}
+.crown{width:12px;height:12px;fill:var(--yellow);}
+.crown.empty{fill:#e5e5e5;}
+.connector{width:4px;height:20px;background:var(--border);margin:0 auto;}
+.connector.done{background:var(--green);}
 
-  /* LEAGUE */
-  .league-banner { background: linear-gradient(135deg, #1cb0f6, #6366f1); border-radius: 16px; padding: 16px; color: white; margin-top: 20px; cursor: pointer; }
-  .league-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .league-icon { font-size: 32px; }
-  .league-info h3 { font-weight: 900; font-size: 16px; }
-  .league-info p { font-size: 12px; opacity: 0.85; }
-  .league-list { display: flex; flex-direction: column; gap: 4px; }
-  .league-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
-  .league-item.you { background: rgba(255,255,255,0.3); font-weight: 800; }
-  .league-rank { width: 20px; font-weight: 800; }
-  .league-xp { margin-left: auto; font-weight: 700; font-size: 12px; opacity: 0.9; }
+/* LEAGUE */
+.league-banner{background:linear-gradient(135deg,#1cb0f6,#6366f1);border-radius:16px;
+  padding:16px;color:white;margin-top:20px;cursor:pointer;}
+.league-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.league-icon{font-size:32px;}
+.league-info h3{font-weight:900;font-size:16px;}
+.league-info p{font-size:12px;opacity:.85;}
+.league-list{display:flex;flex-direction:column;gap:4px;}
+.league-item{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);
+  border-radius:8px;padding:6px 10px;font-size:13px;}
+.league-item.you{background:rgba(255,255,255,.3);font-weight:800;}
+.league-rank{width:20px;font-weight:800;}
+.league-xp{margin-left:auto;font-weight:700;font-size:12px;opacity:.9;}
 
-  /* LESSON */
-  .lesson-header { margin-bottom: 20px; flex-shrink: 0; }
-  .progress-bar-wrap { height: 16px; background: var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
-  .progress-bar-fill { height: 100%; background: var(--green); border-radius: 8px; transition: width 0.4s ease; }
-  .lesson-hearts { display: flex; gap: 4px; }
-  .heart { font-size: 18px; transition: opacity 0.3s; }
-  .heart.lost { opacity: 0.2; }
+/* LESSON */
+.lesson-header{margin-bottom:20px;flex-shrink:0;}
+.progress-bar-wrap{height:16px;background:var(--border);border-radius:8px;overflow:hidden;margin-bottom:8px;}
+.progress-bar-fill{height:100%;background:var(--green);border-radius:8px;transition:width .4s ease;}
+.lesson-hearts{display:flex;gap:4px;}
+.heart{font-size:18px;transition:opacity .3s;}
+.heart.lost{opacity:.2;}
 
-  .question-card { background: var(--white); border: 2px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
-  .question-type { font-size: 12px; font-weight: 800; color: var(--blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .question-text { font-size: 20px; font-weight: 800; line-height: 1.3; }
-  .question-sub { font-size: 14px; color: var(--gray); margin-top: 6px; }
+.question-card{background:var(--white);border:2px solid var(--border);border-radius:16px;
+  padding:20px;margin-bottom:16px;}
+.question-type{font-size:12px;font-weight:800;color:var(--blue);text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:8px;}
+.question-text{font-size:20px;font-weight:800;line-height:1.3;}
+.question-sub{font-size:14px;color:var(--gray);margin-top:6px;}
 
-  .note-display { display: flex; justify-content: center; margin: 20px 0; }
-  .big-note {
-    width: 100px; height: 100px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--blue), #6366f1);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px; font-weight: 900; color: white;
-    box-shadow: 0 8px 0 rgba(28,176,246,0.4);
-    cursor: pointer; touch-action: manipulation; user-select: none;
-    transition: transform 0.1s;
-  }
-  .big-note:active { transform: scale(0.93); }
-  .play-hint { font-size: 12px; color: var(--gray); text-align: center; margin-top: 8px; }
+.note-display{display:flex;justify-content:center;margin:16px 0;}
+.big-note{width:100px;height:100px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),#6366f1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;font-weight:900;color:white;
+  box-shadow:0 8px 0 rgba(28,176,246,.4);
+  cursor:pointer;touch-action:manipulation;user-select:none;transition:transform .1s;}
+.big-note:active{transform:scale(.93);}
+.play-hint{font-size:12px;color:var(--gray);text-align:center;margin-top:8px;}
 
-  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-  .option-btn {
-    padding: 16px 12px; border: 2px solid var(--border); border-radius: 12px;
-    background: var(--white); font-size: 15px; font-weight: 700;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    touch-action: manipulation; -webkit-appearance: none;
-    transition: background 0.15s, border-color 0.15s;
-  }
-  .option-btn:active { background: #f0f0f0; }
-  .option-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
-  .option-btn.wrong { border-color: var(--red); background: #ffe5e5; color: var(--red); }
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.option-btn{padding:16px 12px;border:2px solid var(--border);border-radius:12px;
+  background:var(--white);font-size:15px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  touch-action:manipulation;-webkit-appearance:none;transition:background .15s,border-color .15s;}
+.option-btn:active{background:#f0f0f0;}
+.option-btn.correct{border-color:var(--green);background:var(--green-light);color:var(--green-dark);}
+.option-btn.wrong{border-color:var(--red);background:#ffe5e5;color:var(--red);}
 
-  .mic-area { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 20px 0; }
-  .mic-btn {
-    width: 90px; height: 90px; border-radius: 50%; border: none;
-    background: var(--red); box-shadow: 0 6px 0 #cc0000;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px; cursor: pointer; touch-action: manipulation; -webkit-appearance: none;
-    transition: transform 0.1s;
-  }
-  .mic-btn:active, .mic-btn.recording { transform: scale(0.95); animation: micpulse 0.8s infinite; }
-  @keyframes micpulse { 0%,100%{box-shadow:0 6px 0 #880000} 50%{box-shadow:0 6px 20px rgba(255,75,75,0.5)} }
-  .mic-label { font-size: 13px; color: var(--gray); font-weight: 600; }
-  .waveform { display: flex; align-items: center; gap: 3px; height: 40px; }
-  .wave-bar { width: 5px; background: var(--green); border-radius: 3px; animation: wave 0.6s ease-in-out infinite; }
-  .wave-bar:nth-child(2){animation-delay:0.1s}.wave-bar:nth-child(3){animation-delay:0.2s}.wave-bar:nth-child(4){animation-delay:0.3s}.wave-bar:nth-child(5){animation-delay:0.4s}
-  @keyframes wave { 0%,100%{height:8px} 50%{height:32px} }
+/* MIC BUTTON */
+.mic-area{display:flex;flex-direction:column;align-items:center;gap:10px;margin:16px 0;}
+.mic-btn{width:80px;height:80px;border-radius:50%;border:none;
+  background:var(--red);box-shadow:0 6px 0 #cc0000;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;cursor:pointer;touch-action:manipulation;-webkit-appearance:none;transition:transform .1s;}
+.mic-btn.recording{animation:micpulse .8s infinite;}
+@keyframes micpulse{0%,100%{box-shadow:0 6px 0 #880000}50%{box-shadow:0 6px 20px rgba(255,75,75,.5)}}
+.mic-label{font-size:13px;color:var(--gray);font-weight:600;text-align:center;}
 
-  .feedback { border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-  .feedback.correct { background: var(--green-light); border: 2px solid var(--green); }
-  .feedback.wrong { background: #ffe5e5; border: 2px solid var(--red); }
-  .feedback-icon { font-size: 24px; }
-  .feedback-text h4 { font-weight: 800; font-size: 15px; }
-  .feedback-text p { font-size: 13px; opacity: 0.8; }
-  .feedback.correct h4 { color: var(--green-dark); }
-  .feedback.wrong h4 { color: var(--red); }
+/* FEEDBACK */
+.feedback{border-radius:12px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.feedback.correct{background:var(--green-light);border:2px solid var(--green);}
+.feedback.wrong{background:#ffe5e5;border:2px solid var(--red);}
+.feedback-icon{font-size:24px;}
+.feedback-text h4{font-weight:800;font-size:15px;}
+.feedback-text p{font-size:13px;opacity:.8;}
+.feedback.correct h4{color:var(--green-dark);}
+.feedback.wrong h4{color:var(--red);}
 
-  .btn {
-    width: 100%; padding: 16px; border: none; border-radius: 12px;
-    font-size: 16px; font-weight: 800; cursor: pointer;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    touch-action: manipulation; -webkit-appearance: none;
-    transition: transform 0.1s, box-shadow 0.1s;
-  }
-  .btn:active { transform: translateY(2px); }
-  .btn-green { background: var(--green); box-shadow: 0 4px 0 var(--green-dark); color: white; }
-  .btn-green:active { box-shadow: 0 2px 0 var(--green-dark); }
-  .btn-gray { background: var(--border); box-shadow: 0 4px 0 #c0c0c0; color: var(--gray); }
-  .btn-outline { background: white; border: 2px solid var(--border); color: var(--text); }
+/* BUTTONS */
+.btn{width:100%;padding:16px;border:none;border-radius:12px;font-size:16px;font-weight:800;
+  cursor:pointer;text-transform:uppercase;letter-spacing:.5px;touch-action:manipulation;
+  -webkit-appearance:none;transition:transform .1s,box-shadow .1s;}
+.btn:active{transform:translateY(2px);}
+.btn-green{background:var(--green);box-shadow:0 4px 0 var(--green-dark);color:white;}
+.btn-green:active{box-shadow:0 2px 0 var(--green-dark);}
+.btn-gray{background:var(--border);box-shadow:0 4px 0 #c0c0c0;color:var(--gray);}
+.btn-outline{background:white;border:2px solid var(--border);color:var(--text);}
 
-  /* COMPLETION */
-  .completion { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; padding: 30px; gap: 16px; }
-  .completion-trophy { font-size: 80px; animation: bounce 0.6s ease; }
-  @keyframes bounce { 0%{transform:scale(0)} 60%{transform:scale(1.2)} 100%{transform:scale(1)} }
-  .completion h2 { font-size: 28px; font-weight: 900; color: var(--green); }
-  .completion p { color: var(--gray); font-size: 15px; }
-  .xp-badge { background: linear-gradient(135deg, var(--yellow), var(--orange)); color: white; font-size: 20px; font-weight: 900; padding: 10px 24px; border-radius: 20px; }
-  .stats-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .mini-stat { background: var(--bg); border-radius: 12px; padding: 12px 16px; text-align: center; }
-  .mini-stat-val { font-size: 22px; font-weight: 900; }
-  .mini-stat-label { font-size: 11px; color: var(--gray); font-weight: 700; text-transform: uppercase; }
+/* COMPLETION */
+.completion{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;text-align:center;padding:30px;gap:16px;}
+.completion-trophy{font-size:80px;animation:bounce .6s ease;}
+@keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.completion h2{font-size:28px;font-weight:900;color:var(--green);}
+.completion p{color:var(--gray);font-size:15px;}
+.xp-badge{background:linear-gradient(135deg,var(--yellow),var(--orange));color:white;
+  font-size:20px;font-weight:900;padding:10px 24px;border-radius:20px;}
+.stats-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.mini-stat{background:var(--bg);border-radius:12px;padding:12px 16px;text-align:center;}
+.mini-stat-val{font-size:22px;font-weight:900;}
+.mini-stat-label{font-size:11px;color:var(--gray);font-weight:700;text-transform:uppercase;}
 
-  /* PROFILE */
-  .profile-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 16px; padding: 20px; color: white; }
-  .avatar { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; font-size: 32px; }
-  .profile-name h2 { font-size: 20px; font-weight: 900; }
-  .profile-name p { font-size: 13px; opacity: 0.85; }
-  .badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-  .badge { aspect-ratio: 1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 10px; font-weight: 700; text-align: center; padding: 4px; }
-  .badge.earned { background: var(--green-light); color: var(--green-dark); }
-  .badge.locked { background: var(--border); color: var(--gray); }
-  .badge-icon { font-size: 22px; }
-  .stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .stat-card { background: var(--bg); border-radius: 12px; padding: 14px; }
-  .stat-card-val { font-size: 24px; font-weight: 900; }
-  .stat-card-label { font-size: 12px; color: var(--gray); font-weight: 600; }
-  .stat-card-val.fire{color:var(--orange)}.stat-card-val.blue{color:var(--blue)}.stat-card-val.green{color:var(--green)}.stat-card-val.purple{color:var(--purple)}
+/* PROFILE */
+.profile-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;
+  background:linear-gradient(135deg,#667eea,#764ba2);border-radius:16px;padding:20px;color:white;}
+.avatar{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.3);
+  display:flex;align-items:center;justify-content:center;font-size:32px;}
+.profile-name h2{font-size:20px;font-weight:900;}
+.profile-name p{font-size:13px;opacity:.85;}
+.badges-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.badge{aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:4px;font-size:10px;font-weight:700;text-align:center;padding:4px;}
+.badge.earned{background:var(--green-light);color:var(--green-dark);}
+.badge.locked{background:var(--border);color:var(--gray);}
+.badge-icon{font-size:22px;}
+.stat-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.stat-card{background:var(--bg);border-radius:12px;padding:14px;}
+.stat-card-val{font-size:24px;font-weight:900;}
+.stat-card-label{font-size:12px;color:var(--gray);font-weight:600;}
+.stat-card-val.fire{color:var(--orange)}.stat-card-val.blue{color:var(--blue)}
+.stat-card-val.green{color:var(--green)}.stat-card-val.purple{color:var(--purple)}
 
-  /* iOS install banner */
-  .install-banner {
-    display: none;
-    background: linear-gradient(135deg, #58cc02, #46a302);
-    color: white; padding: 12px 16px;
-    font-size: 13px; font-weight: 600;
-    align-items: center; gap: 8px;
-    flex-shrink: 0;
-  }
-  .install-banner.show { display: flex; }
-  .install-banner button { background: white; color: var(--green-dark); border: none; border-radius: 8px; padding: 4px 10px; font-weight: 800; font-size: 12px; cursor: pointer; margin-left: auto; white-space: nowrap; }
+/* ── PITCH ZONE (new) ── */
+.pitch-zone{display:flex;flex-direction:column;align-items:center;gap:8px;
+  background:var(--bg);border-radius:16px;padding:16px;margin:10px 0;width:100%;}
+.live-note{font-size:3.5rem;font-weight:900;line-height:1;transition:color .12s;color:#ccc;}
+.live-note.in-tune{color:var(--green);}
+.live-note.close{color:var(--yellow);}
+.live-note.off{color:var(--red);}
+.live-cents-text{font-size:.82rem;color:var(--gray);min-height:1.1em;text-align:center;}
+.cents-track-ex{position:relative;width:100%;height:14px;background:var(--border);
+  border-radius:7px;overflow:hidden;}
+.cents-center-ex{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#ccc;transform:translateX(-50%);}
+.cents-needle-ex{position:absolute;top:2px;width:10px;height:10px;border-radius:50%;
+  background:#bbb;left:50%;transform:translateX(-50%);transition:left .08s,background .12s;}
+.cents-needle-ex.in-tune{background:var(--green);}
+.cents-needle-ex.close{background:var(--yellow);}
+.cents-needle-ex.off{background:var(--red);}
+.hold-label{font-size:.78rem;color:var(--gray);text-align:center;}
+.hold-track{width:100%;height:10px;background:var(--border);border-radius:5px;overflow:hidden;}
+.hold-fill{height:100%;width:0%;background:var(--green);border-radius:5px;transition:width .08s;}
+.sustain-timer{font-size:1.1rem;font-weight:800;color:var(--text);}
+
+/* SCALE */
+.scale-row{display:flex;align-items:flex-start;justify-content:center;gap:4px;
+  flex-wrap:wrap;margin:16px 0;}
+.scale-note{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.scale-circle{width:52px;height:52px;border-radius:50%;background:#e5e5e5;color:var(--gray);
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;}
+.scale-circle.scale-current{background:var(--blue);color:white;animation:pulse 1s infinite;}
+.scale-circle.scale-done{background:var(--green);color:white;}
+.scale-check{font-size:.75rem;color:var(--green);font-weight:800;min-height:1em;text-align:center;}
+.scale-arrow{font-size:.9rem;color:#ccc;padding-top:16px;}
+
+/* iOS install banner */
+.install-banner{display:none;background:linear-gradient(135deg,#58cc02,#46a302);color:white;
+  padding:12px 16px;font-size:13px;font-weight:600;align-items:center;gap:8px;flex-shrink:0;}
+.install-banner.show{display:flex;}
+.install-banner button{background:white;color:var(--green-dark);border:none;border-radius:8px;
+  padding:4px 10px;font-weight:800;font-size:12px;cursor:pointer;margin-left:auto;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -244,23 +243,25 @@
   <div class="topbar">
     <div class="topbar-logo"><span>🎤</span> Cantio</div>
     <div class="topbar-stats">
-      <div class="stat">🔥 <span id="streak-count">12</span></div>
-      <div class="stat">💎 <span id="gem-count">340</span></div>
+      <div class="stat">🔥 <span id="streak-count">0</span></div>
+      <div class="stat">💎 <span id="gem-count">0</span></div>
       <div class="stat">❤️ <span id="heart-count">5</span></div>
     </div>
   </div>
 
-  <!-- HOME -->
+  <!-- ── HOME ── -->
   <div class="screen active" id="screen-home">
     <div class="streak-banner">
       <div class="streak-icon">🔥</div>
       <div class="streak-text">
-        <h3>¡12 días de racha!</h3>
-        <p>Practica hoy para mantenerla</p>
+        <h3 id="streak-banner-text">¡Comienza tu racha!</h3>
+        <p>Practica hoy para mejorar tu voz</p>
       </div>
     </div>
+
     <div class="section-title">Tu árbol de habilidades</div>
     <div class="skill-tree">
+
       <div class="skill-row">
         <button class="skill-node unlocked" onclick="startLesson('respiracion')">
           <div class="skill-emoji">🫁</div>
@@ -268,13 +269,14 @@
           <div class="skill-crowns">
             <svg class="crown" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
             <svg class="crown" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
-            <svg class="crown" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
+            <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
             <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
             <svg class="crown empty" viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"/></svg>
           </div>
         </button>
       </div>
       <div class="connector done"></div>
+
       <div class="skill-row">
         <button class="skill-node current" onclick="startLesson('afinacion')">
           <div class="skill-emoji">🎵</div>
@@ -289,20 +291,31 @@
         </button>
       </div>
       <div class="connector"></div>
+
       <div class="skill-row" style="gap:30px">
-        <button class="skill-node locked"><div class="skill-emoji">🗣️</div><div class="skill-label">Vocali-zación</div></button>
-        <button class="skill-node bonus" onclick="startLesson('teoria')"><div class="skill-emoji">🎼</div><div class="skill-label">Teoría</div></button>
+        <button class="skill-node locked">
+          <div class="skill-emoji">🗣️</div><div class="skill-label">Vocali-zación</div>
+        </button>
+        <button class="skill-node bonus" onclick="startLesson('escala')">
+          <div class="skill-emoji">🎼</div><div class="skill-label">Escalas</div>
+        </button>
       </div>
       <div class="connector"></div>
+
       <div class="skill-row">
-        <button class="skill-node locked"><div class="skill-emoji">🎤</div><div class="skill-label">Primera Canción</div></button>
+        <button class="skill-node locked">
+          <div class="skill-emoji">🎤</div><div class="skill-label">Primera Canción</div>
+        </button>
       </div>
       <div class="connector"></div>
+
       <div class="skill-row" style="gap:30px">
         <button class="skill-node locked"><div class="skill-emoji">🎭</div><div class="skill-label">Expresión</div></button>
-        <button class="skill-node locked"><div class="skill-emoji">🎶</div><div class="skill-label">Técnica</div></button>
+        <button class="skill-node locked"><div class="skill-emoji">🎶</div><div class="skill-label">Vibrato</div></button>
       </div>
-    </div>
+
+    </div><!-- /skill-tree -->
+
     <div class="league-banner" onclick="showScreen('profile')">
       <div class="league-header">
         <div class="league-icon">🥇</div>
@@ -311,18 +324,18 @@
       <div class="league-list">
         <div class="league-item"><span class="league-rank">1</span><span>🦊 MelodíaMaestro</span><span class="league-xp">1,240 XP</span></div>
         <div class="league-item"><span class="league-rank">2</span><span>🎵 LaraVox</span><span class="league-xp">980 XP</span></div>
-        <div class="league-item you"><span class="league-rank">3</span><span>🎤 Tú</span><span class="league-xp">870 XP</span></div>
+        <div class="league-item you"><span class="league-rank">3</span><span>🎤 Tú</span><span class="league-xp" id="your-league-xp">0 XP</span></div>
         <div class="league-item"><span class="league-rank">4</span><span>🌟 VocalStar</span><span class="league-xp">740 XP</span></div>
       </div>
     </div>
-  </div>
+  </div><!-- /home -->
 
-  <!-- LESSON -->
+  <!-- ── LESSON ── -->
   <div class="screen" id="screen-lesson">
     <div id="lesson-content"></div>
   </div>
 
-  <!-- PROFILE -->
+  <!-- ── PROFILE ── -->
   <div class="screen" id="screen-profile">
     <div class="profile-header">
       <div class="avatar">🎤</div>
@@ -330,23 +343,23 @@
     </div>
     <div class="section-title">Estadísticas</div>
     <div class="stat-cards" style="margin-bottom:20px">
-      <div class="stat-card"><div class="stat-card-val fire">12</div><div class="stat-card-label">🔥 Racha días</div></div>
-      <div class="stat-card"><div class="stat-card-val blue">870</div><div class="stat-card-label">⚡ XP total</div></div>
-      <div class="stat-card"><div class="stat-card-val green">47</div><div class="stat-card-label">🎤 Lecciones</div></div>
-      <div class="stat-card"><div class="stat-card-val purple">82%</div><div class="stat-card-label">🎵 Afinación</div></div>
+      <div class="stat-card"><div class="stat-card-val fire" id="prof-streak">0</div><div class="stat-card-label">🔥 Racha días</div></div>
+      <div class="stat-card"><div class="stat-card-val blue" id="prof-xp">0</div><div class="stat-card-label">⚡ XP total</div></div>
+      <div class="stat-card"><div class="stat-card-val green" id="prof-lessons">0</div><div class="stat-card-label">🎤 Lecciones</div></div>
+      <div class="stat-card"><div class="stat-card-val purple" id="prof-acc">—</div><div class="stat-card-label">🎵 Afinación</div></div>
     </div>
     <div class="section-title">Logros</div>
     <div class="badges-grid">
-      <div class="badge earned"><div class="badge-icon">🔥</div>Racha 7</div>
-      <div class="badge earned"><div class="badge-icon">🎵</div>Afinado</div>
-      <div class="badge earned"><div class="badge-icon">🌅</div>Madrugador</div>
-      <div class="badge locked"><div class="badge-icon">🏆</div>Liga Plata</div>
-      <div class="badge locked"><div class="badge-icon">🎭</div>Expresivo</div>
-      <div class="badge locked"><div class="badge-icon">🌊</div>Belting</div>
+      <div class="badge earned"><div class="badge-icon">🎵</div>Primera nota</div>
+      <div class="badge locked"><div class="badge-icon">🔥</div>Racha 7</div>
+      <div class="badge locked"><div class="badge-icon">🏆</div>Afinado</div>
+      <div class="badge locked"><div class="badge-icon">🌅</div>Madrugador</div>
+      <div class="badge locked"><div class="badge-icon">🌊</div>Vibrato</div>
       <div class="badge locked"><div class="badge-icon">⭐</div>30 días</div>
+      <div class="badge locked"><div class="badge-icon">🎭</div>Expresivo</div>
       <div class="badge locked"><div class="badge-icon">🎤</div>Karaoke</div>
     </div>
-  </div>
+  </div><!-- /profile -->
 
   <!-- NAV -->
   <div class="nav">
@@ -363,210 +376,731 @@
       Perfil
     </button>
   </div>
-</div>
+
+</div><!-- /app -->
 
 <script>
-// iOS audio unlock — required by Safari
-let audioCtx = null;
-function getAudioCtx() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-  return audioCtx;
+// ══════════════════════════════════════════════════════════
+// 1. AUDIO ENGINE
+// ══════════════════════════════════════════════════════════
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const NOTE_ES    = {C:'DO',D:'RE',E:'MI',F:'FA',G:'SOL',A:'LA',B:'SI',
+                    'C#':'DO#','D#':'RE#','F#':'FA#','G#':'SOL#','A#':'LA#'};
+const ES_TO_EN   = {DO:'C',RE:'D',MI:'E',FA:'F',SOL:'G',LA:'A',SI:'B'};
+const NOTE_FREQ  = {DO:261.63,RE:293.66,MI:329.63,FA:349.23,SOL:392.00,LA:440.00,SI:493.88};
+
+function autoCorrelate(buf, sr) {
+  const N=buf.length;
+  let rms=0; for(let i=0;i<N;i++)rms+=buf[i]*buf[i]; rms=Math.sqrt(rms/N);
+  if(rms<0.012)return -1;
+  let r1=0,r2=N-1;
+  for(let i=0;i<N/2;i++){if(Math.abs(buf[i])>0.2){r1=i;break;}}
+  for(let i=1;i<N/2;i++){if(Math.abs(buf[N-i])>0.2){r2=N-i;break;}}
+  const b=buf.slice(r1,r2+1),n=b.length;
+  const c=new Float32Array(n);
+  for(let i=0;i<n;i++)for(let j=0;j<n-i;j++)c[i]+=b[j]*b[j+i];
+  let d=0; while(d<n-1&&c[d]>c[d+1])d++;
+  let maxV=-Infinity,maxI=-1;
+  for(let i=d;i<n;i++)if(c[i]>maxV){maxV=c[i];maxI=i;}
+  if(maxI<2)return -1;
+  const x1=c[maxI-1],x2=c[maxI],x3=maxI+1<n?c[maxI+1]:0;
+  const aa=(x1+x3-2*x2)/2,bb=(x3-x1)/2;
+  let T0=maxI; if(aa)T0=maxI-bb/(2*aa);
+  return sr/T0;
 }
-document.addEventListener('touchstart', () => getAudioCtx(), { once: true });
 
-// PWA install banner — show only in iOS Safari, not in standalone mode
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-const isStandalone = window.navigator.standalone;
-if (isIOS && !isStandalone) {
-  document.getElementById('install-banner').classList.add('show');
+function noteFromFreq(freq) {
+  if(!freq||freq<60||freq>2000)return null;
+  const semi=12*Math.log2(freq/440);
+  const midiN=Math.round(semi)+69;
+  const idx=((midiN%12)+12)%12;
+  const oct=Math.floor(midiN/12)-1;
+  const cents=(semi-(midiN-69))*100;
+  const name=NOTE_NAMES[idx];
+  return{name,nameEs:NOTE_ES[name]||name,cents:Math.round(cents),oct};
 }
 
-// Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(() => {});
+function getRMS(buf){
+  let s=0;for(let i=0;i<buf.length;i++)s+=buf[i]*buf[i];return Math.sqrt(s/buf.length);
 }
 
-let currentQuestion = 0, hearts = 5, currentLesson = 'afinacion', showingFeedback = false;
+// Shared AudioContext (iOS requires user gesture to create)
+let _ctx=null;
+function getCtx(){
+  if(!_ctx)_ctx=new(window.AudioContext||window.webkitAudioContext)();
+  if(_ctx.state==='suspended')_ctx.resume();
+  return _ctx;
+}
 
-const lessons = {
-  afinacion: {
-    title: 'Afinación Básica',
-    questions: [
-      { type: 'quiz', text: '¿Cuál nota es más aguda?', sub: 'Elige la opción correcta', options: ['🎵 DO', '🎵 SOL', '🎵 FA', '🎵 MI'], correct: 1 },
-      { type: 'sing', text: 'Canta esta nota', sub: 'Presiona el micrófono y entona', note: 'LA', hint: '440 Hz — nota de referencia' },
-      { type: 'quiz', text: '¿En qué orden va la escala mayor?', sub: 'Elige la secuencia correcta', options: ['DO RE MI FA', 'RE MI FA SO', 'LA SI DO RE', 'MI FA SOL LA'], correct: 0 },
-      { type: 'sing', text: 'Sigue la escala', sub: 'Canta: DO - RE - MI - FA', note: '↗️', hint: 'Sube poco a poco' },
-      { type: 'quiz', text: '¿Cuántas notas tiene la escala mayor?', sub: 'Piensa en DO RE MI FA SOL LA SI', options: ['5 notas', '6 notas', '7 notas', '8 notas'], correct: 2 },
+function playTone(freq,dur=1.2){
+  const ctx=getCtx(),osc=ctx.createOscillator(),g=ctx.createGain();
+  osc.connect(g);g.connect(ctx.destination);
+  osc.frequency.value=freq;osc.type='sine';
+  g.gain.setValueAtTime(0.25,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+dur);
+  osc.start();osc.stop(ctx.currentTime+dur);
+}
+
+function playSuccess(){
+  const ctx=getCtx();
+  [523.25,659.25,783.99].forEach((f,i)=>{
+    const osc=ctx.createOscillator(),g=ctx.createGain();
+    osc.connect(g);g.connect(ctx.destination);
+    osc.frequency.value=f;osc.type='sine';
+    const t=ctx.currentTime+i*0.13;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(0.18,t+0.04);
+    g.gain.exponentialRampToValueAtTime(0.001,t+0.4);
+    osc.start(t);osc.stop(t+0.4);
+  });
+}
+
+function playChime(freq){
+  const ctx=getCtx(),osc=ctx.createOscillator(),g=ctx.createGain();
+  osc.connect(g);g.connect(ctx.destination);
+  osc.frequency.value=freq;osc.type='sine';
+  g.gain.setValueAtTime(0.15,ctx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.35);
+  osc.start();osc.stop(ctx.currentTime+0.35);
+}
+
+// ══════════════════════════════════════════════════════════
+// 2. MIC MANAGEMENT
+// ══════════════════════════════════════════════════════════
+let micStream=null,micCtx=null,micAnalyser=null,micSrc=null;
+let micRunning=false,micRaf=null;
+
+async function startMic(){
+  micStream=await navigator.mediaDevices.getUserMedia({
+    audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}
+  });
+  micCtx=new(window.AudioContext||window.webkitAudioContext)();
+  micAnalyser=micCtx.createAnalyser();
+  micAnalyser.fftSize=4096;
+  micAnalyser.smoothingTimeConstant=0.4;
+  micSrc=micCtx.createMediaStreamSource(micStream);
+  micSrc.connect(micAnalyser);
+  micRunning=true;
+}
+
+function stopMic(){
+  micRunning=false;
+  cancelAnimationFrame(micRaf);
+  try{micSrc&&micSrc.disconnect();}catch(e){}
+  try{micStream&&micStream.getTracks().forEach(t=>t.stop());}catch(e){}
+  try{micCtx&&micCtx.close();}catch(e){}
+  micCtx=micSrc=micAnalyser=micStream=null;
+}
+
+function getCurrentPitch(){
+  if(!micAnalyser)return{freq:-1,rms:0};
+  const buf=new Float32Array(micAnalyser.fftSize);
+  micAnalyser.getFloatTimeDomainData(buf);
+  return{freq:autoCorrelate(buf,micCtx.sampleRate),rms:getRMS(buf)};
+}
+
+// ══════════════════════════════════════════════════════════
+// 3. LESSON DATA
+// ══════════════════════════════════════════════════════════
+const LESSONS = {
+  respiracion:{
+    title:'Respiración Diafragmática',xp:15,
+    questions:[
+      {type:'quiz',text:'¿Qué músculo controla la respiración al cantar?',
+       options:['Los pulmones','El diafragma','Las costillas','El cuello'],correct:1,
+       explanation:'El diafragma es el motor de la respiración cantada. Al bajar, crea espacio para el aire.'},
+      {type:'sustain',text:'Canta "AHHH" con apoyo',
+       sub:'Inhala profundo y sostén LA por 3 segundos. Siente el diafragma.',
+       target:'LA',duration:3,tolerance:40},
+      {type:'quiz',text:'¿Cómo se mueve tu vientre al inhalar correctamente?',
+       options:['Hacia adentro','No se mueve','Hacia afuera','El pecho sube'],correct:2,
+       explanation:'El vientre se expande: el diafragma baja y crea espacio para el aire.'},
+      {type:'sustain',text:'Sostén la nota más tiempo',
+       sub:'Ahora aguanta LA por 4 segundos. Apoya desde el diafragma.',
+       target:'LA',duration:4,tolerance:40},
     ]
   },
-  respiracion: {
-    title: 'Respiración Diafragmática',
-    questions: [
-      { type: 'quiz', text: '¿Qué músculo usamos al respirar correctamente?', sub: '', options: ['Los pulmones', 'El diafragma', 'Las costillas', 'El cuello'], correct: 1 },
-      { type: 'sing', text: 'Ejercicio de respiración', sub: 'Inhala 4 tiempos, sostén 4, exhala 8', note: '🌬️', hint: 'Toca el micrófono cuando estés listo' },
-      { type: 'quiz', text: '¿Cómo debe moverse tu vientre al inhalar?', sub: '', options: ['Hacia adentro', 'No se mueve', 'Hacia afuera', 'Hacia arriba'], correct: 2 },
+  afinacion:{
+    title:'Afinación Básica',xp:20,
+    questions:[
+      {type:'quiz',text:'¿Cuál es la nota de referencia universal?',
+       sub:'La más usada para afinar instrumentos en todo el mundo',
+       options:['DO (261 Hz)','MI (330 Hz)','LA (440 Hz)','SOL (392 Hz)'],correct:2,
+       explanation:'LA a 440 Hz es el estándar internacional de afinación desde 1939.'},
+      {type:'pitch',text:'Canta la nota LA',
+       sub:'Toca el círculo para escuchar la referencia, luego canta',
+       target:'LA',tolerance:35},
+      {type:'pitch',text:'Ahora canta MI',
+       sub:'Es más aguda que LA — relaja la mandíbula y sube la nota',
+       target:'MI',tolerance:35},
+      {type:'pitch',text:'Canta DO',
+       sub:'La nota más grave de la escala — baja la laringe levemente',
+       target:'DO',tolerance:35},
+      {type:'sustain',text:'Sostén LA con precisión',
+       sub:'Mantén la nota estable por 2 segundos — apoya con el diafragma',
+       target:'LA',duration:2,tolerance:30},
     ]
   },
-  teoria: {
-    title: 'Teoría Musical ⭐',
-    questions: [
-      { type: 'quiz', text: '¿Cuántas notas tiene el sistema occidental?', sub: 'Contando sostenidos y bemoles', options: ['7 notas', '10 notas', '12 notas', '14 notas'], correct: 2 },
-      { type: 'quiz', text: '¿Qué es un semitono?', sub: 'La distancia más pequeña entre notas', options: ['Dos notas seguidas', 'La mínima distancia', 'Media octava', 'Un acorde'], correct: 1 },
+  escala:{
+    title:'Escala Mayor',xp:25,
+    questions:[
+      {type:'quiz',text:'¿Cuántas notas únicas tiene la escala mayor?',
+       options:['5 notas','6 notas','7 notas','12 notas'],correct:2,
+       explanation:'DO RE MI FA SOL LA SI — 7 notas. El DO final es el mismo pero una octava más aguda.'},
+      {type:'scale',text:'Canta: DO → RE → MI',
+       sub:'Canta cada nota y mantenla ~1 segundo. Se detecta automáticamente.',
+       targets:['DO','RE','MI'],tolerance:35},
+      {type:'scale',text:'Canta: MI → FA → SOL',
+       sub:'Continúa subiendo la escala',
+       targets:['MI','FA','SOL'],tolerance:35},
+      {type:'scale',text:'Escala completa: DO RE MI FA SOL',
+       sub:'¡Todas las notas en orden!',
+       targets:['DO','RE','MI','FA','SOL'],tolerance:35},
+      {type:'pitch',text:'Afina un SOL perfecto',
+       sub:'La quinta nota de la escala — clave en armonía',
+       target:'SOL',tolerance:25},
     ]
   }
 };
 
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
-  if (document.getElementById('nav-' + name)) document.getElementById('nav-' + name).classList.add('active');
+// ══════════════════════════════════════════════════════════
+// 4. APP STATE
+// ══════════════════════════════════════════════════════════
+const ST={
+  xp:   parseInt(localStorage.getItem('c_xp')||'0'),
+  streak:parseInt(localStorage.getItem('c_streak')||'0'),
+  lessons:parseInt(localStorage.getItem('c_lessons')||'0'),
+  allAcc:JSON.parse(localStorage.getItem('c_acc')||'[]'),
+  hearts:5,
+  currentLesson:null,
+  currentQ:0,
+  showingFeedback:false,
+  sessionAcc:[],
+};
+
+function saveState(){
+  localStorage.setItem('c_xp',ST.xp);
+  localStorage.setItem('c_streak',ST.streak);
+  localStorage.setItem('c_lessons',ST.lessons);
+  localStorage.setItem('c_acc',JSON.stringify(ST.allAcc.slice(-50)));
 }
 
-function startLesson(key) {
-  currentLesson = key; currentQuestion = 0; hearts = 5; showingFeedback = false;
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+// ══════════════════════════════════════════════════════════
+// 5. NAVIGATION
+// ══════════════════════════════════════════════════════════
+function showScreen(name){
+  stopMic();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  const ni=document.getElementById('nav-'+name);
+  if(ni)ni.classList.add('active');
+  updateTopbar();
+  if(name==='profile')updateProfile();
+}
+
+function startLesson(key){
+  if(!LESSONS[key])return;
+  ST.currentLesson=key; ST.currentQ=0; ST.hearts=5;
+  ST.showingFeedback=false; ST.sessionAcc=[];
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('nav-lesson').classList.add('active');
   showScreen('lesson');
   renderQuestion();
 }
 
-function renderHearts() {
-  return Array.from({length:5}, (_,i) => `<span class="heart${i>=hearts?' lost':''}"">❤️</span>`).join('');
+function updateTopbar(){
+  document.getElementById('streak-count').textContent=ST.streak;
+  document.getElementById('gem-count').textContent=ST.xp;
+  document.getElementById('heart-count').textContent=ST.hearts;
+  document.getElementById('your-league-xp').textContent=ST.xp+' XP';
+  const sb=document.getElementById('streak-banner-text');
+  if(sb)sb.textContent=ST.streak>0?'¡'+ST.streak+' días de racha!':'¡Comienza tu racha hoy!';
 }
 
-function renderQuestion() {
-  const lesson = lessons[currentLesson];
-  const q = lesson.questions[currentQuestion];
-  if (!q) { renderCompletion(); return; }
-  const progress = (currentQuestion / lesson.questions.length) * 100;
+function updateProfile(){
+  document.getElementById('prof-streak').textContent=ST.streak;
+  document.getElementById('prof-xp').textContent=ST.xp;
+  document.getElementById('prof-lessons').textContent=ST.lessons;
+  const allAcc=ST.allAcc;
+  document.getElementById('prof-acc').textContent=
+    allAcc.length>0?Math.round(allAcc.reduce((a,b)=>a+b,0)/allAcc.length)+'%':'—';
+}
 
-  let body = '';
-  if (q.type === 'quiz') {
-    body = `
-      <div class="question-card">
-        <div class="question-type">🎵 Pregunta</div>
-        <div class="question-text">${q.text}</div>
-        ${q.sub ? `<div class="question-sub">${q.sub}</div>` : ''}
-      </div>
-      <div class="options-grid">
-        ${q.options.map((o,i) => `<button class="option-btn" id="opt-${i}" onclick="checkAnswer(${i})">${o}</button>`).join('')}
-      </div>`;
-  } else {
-    body = `
-      <div class="question-card">
-        <div class="question-type">🎤 Canta esto</div>
-        <div class="question-text">${q.text}</div>
-        <div class="question-sub">${q.sub}</div>
-      </div>
-      <div class="note-display"><div>
-        <div class="big-note" onclick="playNote()">${q.note}</div>
-        <div class="play-hint">Toca para escuchar</div>
-      </div></div>
-      <div class="mic-area">
-        <button class="mic-btn" id="mic-btn" onclick="toggleMic()">🎙️</button>
-        <div class="mic-label" id="mic-label">Presiona para cantar</div>
-        <div class="waveform" id="waveform" style="display:none">
-          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
-        </div>
-      </div>`;
-  }
+// ══════════════════════════════════════════════════════════
+// 6. QUESTION RENDERING
+// ══════════════════════════════════════════════════════════
+function renderQuestion(){
+  stopMic();
+  const lesson=LESSONS[ST.currentLesson];
+  if(!lesson)return;
+  const q=lesson.questions[ST.currentQ];
+  if(!q){renderCompletion();return;}
 
-  document.getElementById('lesson-content').innerHTML = `
+  const progress=(ST.currentQ/lesson.questions.length)*100;
+  const heartsHtml=Array.from({length:5},(_,i)=>
+    `<span class="heart${i>=ST.hearts?' lost':''}"">❤️</span>`).join('');
+
+  let body='';
+  if(q.type==='quiz')   body=buildQuiz(q);
+  else if(q.type==='pitch')   body=buildPitch(q);
+  else if(q.type==='scale')   body=buildScale(q);
+  else if(q.type==='sustain') body=buildSustain(q);
+
+  document.getElementById('lesson-content').innerHTML=`
     <div class="lesson-header">
-      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${progress}%"></div></div>
-      <div class="lesson-hearts">${renderHearts()}</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:${progress}%"></div>
+      </div>
+      <div class="lesson-hearts" id="hearts-display">${heartsHtml}</div>
     </div>
     ${body}
     <div id="feedback-area"></div>
-    <button class="btn btn-gray" id="continue-btn" style="display:none" onclick="nextQuestion()">Continuar</button>
-    <button class="btn btn-outline" onclick="showScreen('home')" style="margin-top:10px">Salir</button>
+    <button class="btn btn-gray" id="continue-btn" style="display:none" onclick="nextQ()">Continuar →</button>
+    <button class="btn btn-outline" onclick="exitLesson()" style="margin-top:8px">Salir</button>
   `;
 }
 
-function checkAnswer(idx) {
-  if (showingFeedback) return;
-  showingFeedback = true;
-  const q = lessons[currentLesson].questions[currentQuestion];
-  const ok = idx === q.correct;
-  document.querySelectorAll('.option-btn').forEach((b,i) => {
-    b.onclick = null;
-    if (i === q.correct) b.classList.add('correct');
-    else if (i === idx && !ok) b.classList.add('wrong');
-  });
-  if (!ok) { hearts = Math.max(0, hearts-1); document.querySelector('.lesson-hearts').innerHTML = renderHearts(); }
-  document.getElementById('feedback-area').innerHTML = `
+function exitLesson(){stopMic();showScreen('home');}
+
+function nextQ(){
+  stopMic();
+  ST.showingFeedback=false;
+  ST.currentQ++;
+  renderQuestion();
+}
+
+function loseHeart(){
+  ST.hearts=Math.max(0,ST.hearts-1);
+  document.getElementById('hearts-display').innerHTML=
+    Array.from({length:5},(_,i)=>`<span class="heart${i>=ST.hearts?' lost':''}"">❤️</span>`).join('');
+  updateTopbar();
+}
+
+function showFeedback(ok, title, detail){
+  document.getElementById('feedback-area').innerHTML=`
     <div class="feedback ${ok?'correct':'wrong'}">
       <div class="feedback-icon">${ok?'✅':'❌'}</div>
-      <div class="feedback-text">
-        <h4>${ok?'¡Correcto!':'¡Casi!'}</h4>
-        <p>${ok?'¡Excelente oído!':'La respuesta correcta es: '+q.options[q.correct]}</p>
-      </div>
+      <div class="feedback-text"><h4>${title}</h4><p>${detail}</p></div>
     </div>`;
-  const btn = document.getElementById('continue-btn');
-  btn.style.display = 'block';
-  btn.className = `btn ${ok?'btn-green':'btn-gray'}`;
+  const btn=document.getElementById('continue-btn');
+  btn.style.display='block';
+  btn.className='btn '+(ok?'btn-green':'btn-gray');
 }
 
-function toggleMic() {
-  if (showingFeedback) return;
-  getAudioCtx(); // unlock iOS audio on mic tap
-  const btn = document.getElementById('mic-btn');
-  const label = document.getElementById('mic-label');
-  const wave = document.getElementById('waveform');
-  btn.classList.add('recording');
-  label.textContent = 'Grabando...';
-  wave.style.display = 'flex';
-  setTimeout(() => {
-    btn.classList.remove('recording');
-    label.textContent = '¡Buena entonación!';
-    wave.style.display = 'none';
-    showingFeedback = true;
-    document.getElementById('feedback-area').innerHTML = `
-      <div class="feedback correct">
-        <div class="feedback-icon">✅</div>
-        <div class="feedback-text"><h4>¡Excelente afinación!</h4><p>Tu voz suena muy bien en esa nota 🎵</p></div>
-      </div>`;
-    const btn2 = document.getElementById('continue-btn');
-    btn2.style.display = 'block'; btn2.className = 'btn btn-green';
-  }, 2500);
+// ══════════════════════════════════════════════════════════
+// 7. QUIZ EXERCISE
+// ══════════════════════════════════════════════════════════
+function buildQuiz(q){
+  return `
+    <div class="question-card">
+      <div class="question-type">🎵 Pregunta</div>
+      <div class="question-text">${q.text}</div>
+      ${q.sub?`<div class="question-sub">${q.sub}</div>`:''}
+    </div>
+    <div class="options-grid">
+      ${q.options.map((o,i)=>`<button class="option-btn" id="opt-${i}" onclick="checkAnswer(${i})">${o}</button>`).join('')}
+    </div>`;
 }
 
-function playNote() {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain); gain.connect(ctx.destination);
-  osc.frequency.value = 440; osc.type = 'sine';
-  gain.gain.setValueAtTime(0.3, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
-  osc.start(); osc.stop(ctx.currentTime + 1.5);
+function checkAnswer(idx){
+  if(ST.showingFeedback)return;
+  ST.showingFeedback=true;
+  const q=LESSONS[ST.currentLesson].questions[ST.currentQ];
+  const ok=idx===q.correct;
+  document.querySelectorAll('.option-btn').forEach((b,i)=>{
+    b.onclick=null;
+    if(i===q.correct)b.classList.add('correct');
+    else if(i===idx&&!ok)b.classList.add('wrong');
+  });
+  if(!ok)loseHeart();
+  ST.sessionAcc.push(ok?100:0);
+  showFeedback(ok,ok?'¡Correcto!':'¡Casi!',
+    q.explanation||(ok?'¡Excelente!':'Respuesta correcta: '+q.options[q.correct]));
+  if(ok)playSuccess();
 }
 
-function nextQuestion() {
-  showingFeedback = false;
-  currentQuestion++;
-  if (currentQuestion >= lessons[currentLesson].questions.length) renderCompletion();
-  else renderQuestion();
+// ══════════════════════════════════════════════════════════
+// 8. PITCH EXERCISE
+// ══════════════════════════════════════════════════════════
+function buildPitch(q){
+  const freq=NOTE_FREQ[q.target]||440;
+  return `
+    <div class="question-card">
+      <div class="question-type">🎤 Canta esta nota</div>
+      <div class="question-text">${q.text}</div>
+      <div class="question-sub">${q.sub||''}</div>
+    </div>
+    <div class="note-display">
+      <div>
+        <div class="big-note" onclick="playTone(${freq})">${q.target}</div>
+        <div class="play-hint">Toca para escuchar 🔊</div>
+      </div>
+    </div>
+    <div class="pitch-zone" id="pitch-zone">
+      <div class="live-note" id="live-note">—</div>
+      <div class="live-cents-text" id="live-cents-text">Presiona el micrófono y canta</div>
+      <div class="cents-track-ex">
+        <div class="cents-center-ex"></div>
+        <div class="cents-needle-ex" id="cents-needle"></div>
+      </div>
+      <div class="hold-label" id="hold-label">Sostén la nota correcta</div>
+      <div class="hold-track"><div class="hold-fill" id="hold-fill"></div></div>
+    </div>
+    <div class="mic-area">
+      <button class="mic-btn" id="mic-btn" onclick="togglePitchMic('${q.target}',${q.tolerance||35})">🎙️</button>
+      <div class="mic-label" id="mic-label">Presiona para cantar</div>
+    </div>`;
 }
 
-function renderCompletion() {
-  document.getElementById('lesson-content').innerHTML = `
+let _pitchHold=0, _pitchReq=1.5;
+
+async function togglePitchMic(target,tol){
+  if(ST.showingFeedback)return;
+  const btn=document.getElementById('mic-btn');
+  const lbl=document.getElementById('mic-label');
+  if(micRunning){stopMic();btn.classList.remove('recording');lbl.textContent='Presiona para cantar';return;}
+  try{
+    btn.classList.add('recording');lbl.textContent='Escuchando…';
+    await startMic();
+    _pitchHold=0;
+    pitchLoop(target,tol);
+  }catch(e){lbl.textContent='Error: '+e.message;btn.classList.remove('recording');}
+}
+
+function pitchLoop(target,tol){
+  if(!micRunning||ST.showingFeedback)return;
+  const{freq}=getCurrentPitch();
+  const info=freq>0?noteFromFreq(freq):null;
+  const targetEn=ES_TO_EN[target];
+
+  const lnEl=document.getElementById('live-note');
+  const lcEl=document.getElementById('live-cents-text');
+  const ndEl=document.getElementById('cents-needle');
+  const hfEl=document.getElementById('hold-fill');
+  const hlEl=document.getElementById('hold-label');
+  if(!lnEl)return;
+
+  const hit=info&&info.name===targetEn&&Math.abs(info.cents)<=tol;
+
+  if(info){
+    lnEl.textContent=info.nameEs;
+    lnEl.className='live-note '+(hit?'in-tune':info.name===targetEn?'close':'off');
+    const sign=info.cents>=0?'+':'';
+    lcEl.textContent=sign+info.cents+'¢  '+(hit?'✓ Perfecto':Math.abs(info.cents)<tol*1.5?'Casi…':'');
+    ndEl.style.left=Math.max(5,Math.min(95,50+(info.cents/50)*50))+'%';
+    ndEl.className='cents-needle-ex '+(hit?'in-tune':info.name===targetEn?'close':'off');
+  }else{
+    lnEl.textContent='—';lnEl.className='live-note';
+    lcEl.textContent='Canta la nota';
+    ndEl.style.left='50%';ndEl.className='cents-needle-ex';
+  }
+
+  if(hit){
+    _pitchHold+=1/30;
+    hfEl.style.width=Math.min(100,(_pitchHold/_pitchReq)*100)+'%';
+    hlEl.textContent='¡Mantén! '+Math.max(0,_pitchReq-_pitchHold).toFixed(1)+'s';
+    if(_pitchHold>=_pitchReq){stopMic();onPitchSuccess();return;}
+  }else{
+    _pitchHold=Math.max(0,_pitchHold-0.05);
+    hfEl.style.width=Math.max(0,(_pitchHold/_pitchReq)*100)+'%';
+    hlEl.textContent='Sostén la nota correcta';
+  }
+
+  micRaf=requestAnimationFrame(()=>pitchLoop(target,tol));
+}
+
+function onPitchSuccess(){
+  if(ST.showingFeedback)return;
+  ST.showingFeedback=true;
+  ST.sessionAcc.push(100);
+  playSuccess();
+  document.getElementById('mic-btn').classList.remove('recording');
+  document.getElementById('mic-label').textContent='¡Perfecto!';
+  showFeedback(true,'¡Afinación perfecta!','Cantaste la nota correcta y la sostuviste. ¡Excelente! 🎵');
+}
+
+// ══════════════════════════════════════════════════════════
+// 9. SCALE EXERCISE
+// ══════════════════════════════════════════════════════════
+function buildScale(q){
+  const notesHtml=q.targets.map((n,i)=>`
+    <div class="scale-note">
+      <div class="scale-circle ${i===0?'scale-current':''}" id="sc-${i}">${n}</div>
+      <div class="scale-check" id="sk-${i}"></div>
+    </div>
+    ${i<q.targets.length-1?'<div class="scale-arrow">→</div>':''}`).join('');
+
+  return `
+    <div class="question-card">
+      <div class="question-type">🎤 Ejercicio de escala</div>
+      <div class="question-text">${q.text}</div>
+      <div class="question-sub">${q.sub||'Cada nota se detecta automáticamente'}</div>
+    </div>
+    <div class="scale-row">${notesHtml}</div>
+    <div class="pitch-zone">
+      <div class="live-note" id="live-note">—</div>
+      <div class="live-cents-text" id="live-cents-text">Canta la primera nota</div>
+      <div class="cents-track-ex">
+        <div class="cents-center-ex"></div>
+        <div class="cents-needle-ex" id="cents-needle"></div>
+      </div>
+      <div class="hold-label" id="hold-label">Apunta a: <strong>${q.targets[0]}</strong></div>
+      <div class="hold-track"><div class="hold-fill" id="hold-fill"></div></div>
+    </div>
+    <div class="mic-area">
+      <button class="mic-btn" id="mic-btn" onclick="toggleScaleMic(${JSON.stringify(q.targets)},${q.tolerance||35})">🎙️</button>
+      <div class="mic-label" id="mic-label">Presiona para comenzar</div>
+    </div>`;
+}
+
+let _scaleIdx=0, _scaleHold=0, _scaleReq=0.9;
+
+async function toggleScaleMic(targets,tol){
+  if(ST.showingFeedback)return;
+  const btn=document.getElementById('mic-btn');
+  const lbl=document.getElementById('mic-label');
+  if(micRunning){stopMic();btn.classList.remove('recording');lbl.textContent='Presiona para comenzar';return;}
+  try{
+    btn.classList.add('recording');lbl.textContent='Escuchando…';
+    await startMic();
+    _scaleIdx=0;_scaleHold=0;
+    scaleLoop(targets,tol);
+  }catch(e){lbl.textContent='Error: '+e.message;btn.classList.remove('recording');}
+}
+
+function scaleLoop(targets,tol){
+  if(!micRunning||ST.showingFeedback||_scaleIdx>=targets.length)return;
+  const{freq}=getCurrentPitch();
+  const info=freq>0?noteFromFreq(freq):null;
+  const target=targets[_scaleIdx];
+  const targetEn=ES_TO_EN[target];
+
+  const lnEl=document.getElementById('live-note');
+  const lcEl=document.getElementById('live-cents-text');
+  const ndEl=document.getElementById('cents-needle');
+  const hfEl=document.getElementById('hold-fill');
+  const hlEl=document.getElementById('hold-label');
+  if(!lnEl)return;
+
+  const hit=info&&info.name===targetEn&&Math.abs(info.cents)<=tol;
+
+  if(info){
+    lnEl.textContent=info.nameEs;
+    lnEl.className='live-note '+(hit?'in-tune':info.name===targetEn?'close':'off');
+    const sign=info.cents>=0?'+':'';
+    lcEl.textContent=sign+info.cents+'¢';
+    ndEl.style.left=Math.max(5,Math.min(95,50+(info.cents/50)*50))+'%';
+    ndEl.className='cents-needle-ex '+(hit?'in-tune':info.name===targetEn?'close':'off');
+  }else{
+    lnEl.textContent='—';lnEl.className='live-note';
+    lcEl.textContent='';
+    ndEl.style.left='50%';ndEl.className='cents-needle-ex';
+  }
+
+  hlEl.innerHTML='Canta: <strong>'+target+'</strong>';
+
+  if(hit){
+    _scaleHold+=1/30;
+    hfEl.style.width=Math.min(100,(_scaleHold/_scaleReq)*100)+'%';
+    if(_scaleHold>=_scaleReq){
+      // note complete
+      document.getElementById('sc-'+_scaleIdx).className='scale-circle scale-done';
+      document.getElementById('sk-'+_scaleIdx).textContent='✓';
+      playChime(NOTE_FREQ[target]||440);
+      _scaleIdx++;_scaleHold=0;hfEl.style.width='0%';
+      if(_scaleIdx<targets.length){
+        document.getElementById('sc-'+_scaleIdx).className='scale-circle scale-current';
+      }else{
+        stopMic();onScaleSuccess(targets.length);return;
+      }
+    }
+  }else{
+    _scaleHold=Math.max(0,_scaleHold-0.06);
+    hfEl.style.width=Math.max(0,(_scaleHold/_scaleReq)*100)+'%';
+  }
+
+  micRaf=requestAnimationFrame(()=>scaleLoop(targets,tol));
+}
+
+function onScaleSuccess(n){
+  if(ST.showingFeedback)return;
+  ST.showingFeedback=true;
+  ST.sessionAcc.push(100);
+  playSuccess();
+  document.getElementById('mic-btn').classList.remove('recording');
+  document.getElementById('mic-label').textContent='¡Escala completada!';
+  showFeedback(true,'¡Escala perfecta!','Cantaste las '+n+' notas correctamente en orden. ¡Impresionante! 🎵');
+}
+
+// ══════════════════════════════════════════════════════════
+// 10. SUSTAIN EXERCISE
+// ══════════════════════════════════════════════════════════
+function buildSustain(q){
+  const freq=NOTE_FREQ[q.target]||440;
+  return `
+    <div class="question-card">
+      <div class="question-type">🎤 Sostén la nota</div>
+      <div class="question-text">${q.text}</div>
+      <div class="question-sub">${q.sub||''}</div>
+    </div>
+    <div class="note-display">
+      <div>
+        <div class="big-note" onclick="playTone(${freq})">${q.target}</div>
+        <div class="play-hint">Toca para escuchar 🔊</div>
+      </div>
+    </div>
+    <div class="pitch-zone">
+      <div class="live-note" id="live-note">—</div>
+      <div class="live-cents-text" id="live-cents-text">Canta y mantén</div>
+      <div class="cents-track-ex">
+        <div class="cents-center-ex"></div>
+        <div class="cents-needle-ex" id="cents-needle"></div>
+      </div>
+      <div class="hold-label" id="hold-label">Sostén <strong>${q.target}</strong> por ${q.duration} segundos</div>
+      <div class="hold-track"><div class="hold-fill" id="hold-fill"></div></div>
+      <div class="sustain-timer" id="stimer">0.0 / ${q.duration}s</div>
+    </div>
+    <div class="mic-area">
+      <button class="mic-btn" id="mic-btn" onclick="toggleSustainMic('${q.target}',${q.tolerance||35},${q.duration})">🎙️</button>
+      <div class="mic-label" id="mic-label">Presiona para cantar</div>
+    </div>`;
+}
+
+let _sustHold=0;
+
+async function toggleSustainMic(target,tol,dur){
+  if(ST.showingFeedback)return;
+  const btn=document.getElementById('mic-btn');
+  const lbl=document.getElementById('mic-label');
+  if(micRunning){stopMic();btn.classList.remove('recording');lbl.textContent='Presiona para cantar';return;}
+  try{
+    btn.classList.add('recording');lbl.textContent='Escuchando…';
+    await startMic();
+    _sustHold=0;
+    sustainLoop(target,tol,dur);
+  }catch(e){lbl.textContent='Error: '+e.message;btn.classList.remove('recording');}
+}
+
+function sustainLoop(target,tol,dur){
+  if(!micRunning||ST.showingFeedback)return;
+  const{freq}=getCurrentPitch();
+  const info=freq>0?noteFromFreq(freq):null;
+  const targetEn=ES_TO_EN[target];
+
+  const lnEl=document.getElementById('live-note');
+  const lcEl=document.getElementById('live-cents-text');
+  const ndEl=document.getElementById('cents-needle');
+  const hfEl=document.getElementById('hold-fill');
+  const hlEl=document.getElementById('hold-label');
+  const stEl=document.getElementById('stimer');
+  if(!lnEl)return;
+
+  const hit=info&&info.name===targetEn&&Math.abs(info.cents)<=tol;
+
+  if(info){
+    lnEl.textContent=info.nameEs;
+    lnEl.className='live-note '+(hit?'in-tune':info.name===targetEn?'close':'off');
+    const sign=info.cents>=0?'+':'';
+    lcEl.textContent=sign+info.cents+'¢  '+(hit?'✓ En tono':'');
+    ndEl.style.left=Math.max(5,Math.min(95,50+(info.cents/50)*50))+'%';
+    ndEl.className='cents-needle-ex '+(hit?'in-tune':info.name===targetEn?'close':'off');
+  }else{
+    lnEl.textContent='—';lnEl.className='live-note';
+    lcEl.textContent='Canta la nota';
+    ndEl.style.left='50%';ndEl.className='cents-needle-ex';
+  }
+
+  if(hit){
+    _sustHold+=1/30;
+    const pct=Math.min(100,(_sustHold/dur)*100);
+    hfEl.style.width=pct+'%';
+    hfEl.style.background=pct>66?'#58cc02':pct>33?'#ffc800':'#ff9600';
+    if(stEl)stEl.textContent=_sustHold.toFixed(1)+' / '+dur+'s';
+    hlEl.textContent='¡Mantén! '+Math.max(0,dur-_sustHold).toFixed(1)+'s más…';
+    if(_sustHold>=dur){stopMic();onSustainSuccess(_sustHold);return;}
+  }else{
+    _sustHold=Math.max(0,_sustHold-0.1);
+    hfEl.style.width=Math.max(0,(_sustHold/dur)*100)+'%';
+    if(stEl)stEl.textContent=_sustHold.toFixed(1)+' / '+dur+'s';
+    hlEl.innerHTML='Sostén <strong>'+target+'</strong> por '+dur+'s';
+  }
+
+  micRaf=requestAnimationFrame(()=>sustainLoop(target,tol,dur));
+}
+
+function onSustainSuccess(held){
+  if(ST.showingFeedback)return;
+  ST.showingFeedback=true;
+  ST.sessionAcc.push(100);
+  playSuccess();
+  document.getElementById('mic-btn').classList.remove('recording');
+  document.getElementById('mic-label').textContent='¡Excelente!';
+  showFeedback(true,'¡Nota sostenida!',
+    'Mantuviste '+held.toFixed(1)+'s en el tono correcto. El diafragma funciona 💪');
+}
+
+// ══════════════════════════════════════════════════════════
+// 11. COMPLETION
+// ══════════════════════════════════════════════════════════
+function renderCompletion(){
+  stopMic();
+  const lesson=LESSONS[ST.currentLesson];
+  ST.xp+=lesson.xp;
+  ST.lessons++;
+  const acc=ST.sessionAcc.length>0
+    ?Math.round(ST.sessionAcc.reduce((a,b)=>a+b,0)/ST.sessionAcc.length):100;
+  ST.allAcc.push(acc);
+
+  // Update streak
+  const today=new Date().toDateString();
+  const lastDay=localStorage.getItem('c_lastday');
+  if(lastDay!==today){
+    ST.streak++;
+    localStorage.setItem('c_lastday',today);
+  }
+
+  saveState();
+
+  document.getElementById('lesson-content').innerHTML=`
     <div class="completion">
       <div class="completion-trophy">🏆</div>
       <h2>¡Lección completada!</h2>
-      <p>Sigue así y serás un gran cantante</p>
-      <div class="xp-badge">+15 XP</div>
+      <p>${lesson.title} — ¡sigue practicando!</p>
+      <div class="xp-badge">+${lesson.xp} XP</div>
       <div class="stats-row">
-        <div class="mini-stat"><div class="mini-stat-val">${lessons[currentLesson].questions.length}</div><div class="mini-stat-label">Ejercicios</div></div>
-        <div class="mini-stat"><div class="mini-stat-val">❤️ ${hearts}/5</div><div class="mini-stat-label">Vidas</div></div>
-        <div class="mini-stat"><div class="mini-stat-val">86%</div><div class="mini-stat-label">Precisión</div></div>
+        <div class="mini-stat">
+          <div class="mini-stat-val">${lesson.questions.length}</div>
+          <div class="mini-stat-label">Ejercicios</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-val">❤️ ${ST.hearts}/5</div>
+          <div class="mini-stat-label">Vidas</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-val">${acc}%</div>
+          <div class="mini-stat-label">Precisión</div>
+        </div>
       </div>
       <button class="btn btn-green" onclick="showScreen('home')">Volver al inicio</button>
     </div>`;
-  document.getElementById('gem-count').textContent = parseInt(document.getElementById('gem-count').textContent) + 15;
+  updateTopbar();
 }
+
+// ══════════════════════════════════════════════════════════
+// 12. INIT
+// ══════════════════════════════════════════════════════════
+updateTopbar();
+
+// iOS audio unlock
+document.addEventListener('touchstart',()=>getCtx(),{once:true});
+
+// iOS install banner
+if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone)
+  document.getElementById('install-banner').classList.add('show');
+
+// Service Worker
+if('serviceWorker'in navigator)
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body>
 </html>
